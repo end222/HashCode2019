@@ -5,17 +5,12 @@
 #include <string.h>
 #include <list>
 
+#include "Slide/Slide.h"
+
 using namespace std;
 
-struct foto
-{
-	int id;
-	char orientacion;
-	int numTags;
-	list<string> tags;
-};
-
 list<foto> listaFotos;
+list<Slide> listaSlides;
 
 void readInput()
 {
@@ -48,5 +43,16 @@ void readInput()
 int main()
 {
 	readInput();
-	cout << listaFotos.front().tags.front() << endl;
+	while(!listaFotos.empty()){
+		Slide s = Slide();
+		s.anadirFoto(listaFotos.front());
+		listaFotos.pop_front();
+		listaSlides.push_back(s);
+	}
+
+	cout << listaSlides.size() << endl;
+	while(!listaSlides.empty()){
+		listaSlides.front().mostrarSalida();
+		listaSlides.pop_front();
+	}
 }
