@@ -26,9 +26,9 @@ void readInput()
 		fotoameter.id = i;
 		int j = 0;
 		cin.getline(line,1000);
-		char orientacion = line[0];
-		fotoameter.orientacion = orientacion;
-		strtok(line, delim);
+		char* orientacion = strtok(line, delim);
+		char trueOrientacion = *orientacion;
+		fotoameter.orientacion = trueOrientacion;
 		int numTags = atoi(strtok(NULL, delim));
 		while(j < numTags){
 			fotoameter.tags.push_back(strtok(NULL,delim));
@@ -43,10 +43,24 @@ void readInput()
 int main()
 {
 	readInput();
+	bool eraVertical = false;
 	while(!listaFotos.empty()){
 		Slide s = Slide();
 		s.anadirFoto(listaFotos.front());
+		eraVertical = (listaFotos.front().orientacion == 'V');
 		listaFotos.pop_front();
+		while(listaFotos.front().orientacion == 'H'){
+			Slide s2 = Slide();
+			s2.anadirFoto(listaFotos.front());
+			listaFotos.pop_front();
+			listaSlides.push_back(s2);
+		}
+		if(eraVertical)
+		{
+			s.anadirFoto(listaFotos.front());
+			listaFotos.pop_front();
+			eraVertical = false;
+		}
 		listaSlides.push_back(s);
 	}
 
